@@ -630,6 +630,7 @@ GameObject:
   - component: {fileID: 2462152548272581243}
   - component: {fileID: 342261446719650675}
   - component: {fileID: 598795142735291778}
+  - component: {fileID: 5871930025940516452}
   m_Layer: 5
   m_Name: Book
   m_TagString: Untagged
@@ -698,3 +699,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5871930025940516452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8546870763715171585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ba6b83778decd54ca96670ac0fcf95e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bookImage: {fileID: 8211315606105390846}
+  bookNameText: {fileID: 2683787926160090206}
+  bookAuthorText: {fileID: 4449594451032454099}

@@ -11,7 +11,7 @@ public class DataPersistenceManager : MonoBehaviour
 
     [SerializeField] private bool useEncryption;
     
-    public AppData appData;
+    public LibraryData appData;
     
     private List<IDataPersistence> _dataPersistenceObjects;
     private FileDataHandler _dataHandler;
@@ -21,7 +21,6 @@ public class DataPersistenceManager : MonoBehaviour
     {
         if (Instance!=null)
         {
-            Debug.Log("$ Found more than Data Persistence Manager in the scene");
             Destroy(gameObject);
             return;
         }
@@ -34,51 +33,42 @@ public class DataPersistenceManager : MonoBehaviour
     {
         _dataHandler = new FileDataHandler(Application.persistentDataPath,fileName,useEncryption);
         _dataPersistenceObjects = FindAllDataPersistenceObjects();
-        LoadGame();
+        LoadData();
     }
 
-    public void NewGame()
+    public void DefaultAppData()
     {
-        this.appData = new AppData();
+        this.appData = new LibraryData();
     }
 
-    public void LoadGame()
+    private void LoadData()
     {
-        // GetCrop any saved data from a  file using the data handler
         appData = _dataHandler.Load();
-        
-        // if no data can be loaded , initialize to a new game
         
         if (appData==null)
         {
-            Debug.Log("No data was found. Initializing data to defaults.");
-            NewGame();
+            DefaultAppData();
         }
         
-        // TODO -  push the loaded data to all other scripts that need it
         foreach (var dataPersistenceObject in _dataPersistenceObjects)
         {
             dataPersistenceObject.LoadData(appData);
         }
     }
 
-    public void SaveGame()
+    private void SaveData()
     {
-        // TODO - pass the data to other scripts so they can update it
-        
         foreach (IDataPersistence dataPersistenceObject in _dataPersistenceObjects)
         {
             dataPersistenceObject.SaveData(ref appData);
         }
-        
-        // save that data to a file using the data handler
         
         _dataHandler.Save(appData);
     }
 
     private void OnApplicationQuit()
     {
-        SaveGame();
+        SaveData();
     }
 
     private List<IDataPersistence> FindAllDataPersistenceObjects()

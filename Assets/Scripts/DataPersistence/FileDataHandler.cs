@@ -19,10 +19,10 @@ namespace DefaultNamespace.DataPersistence
             _useEncryption = useEncryption;
         }
 
-        public AppData Load()
+        public LibraryData Load()
         {
             string fullPath = Path.Combine(_dataDirPath, _dataFileName);
-            AppData loadedData = null;
+            LibraryData loadedData = null;
             if (File.Exists(fullPath))
             {
                 try
@@ -41,7 +41,7 @@ namespace DefaultNamespace.DataPersistence
                         dataToLoad = EncryptDecrypt(dataToLoad);
                     }
 
-                    loadedData = JsonUtility.FromJson<AppData>(dataToLoad);
+                    loadedData = JsonUtility.FromJson<LibraryData>(dataToLoad);
                 }
                 catch (Exception e)
                 {
@@ -53,21 +53,19 @@ namespace DefaultNamespace.DataPersistence
             return loadedData;
         }
 
-        public void Save(AppData data)
+        public void Save(LibraryData data)
         {
             string fullPath = Path.Combine(_dataDirPath, _dataFileName);
             try
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(fullPath) ?? throw new InvalidOperationException());
                 
-                // serialize the c# game data object into Json
                 string dataToStore = JsonUtility.ToJson(data, true);
 
                 if (_useEncryption)
                 {
                     dataToStore = EncryptDecrypt(dataToStore);
                 }
-                // write the serialized data to the file 
                 using FileStream stream = new FileStream(fullPath, FileMode.Create);
                 using StreamWriter writer = new StreamWriter(stream);
                 writer.Write(dataToStore);
